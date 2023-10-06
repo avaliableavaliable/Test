@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title></title>
+		<style>
+		/* 设置警告字体颜色 */
+		.warn{
+			color:red;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			<textarea cols="30" rows="10" placeholder="请发表你今天的心情..." v-model="content"></textarea>
+
+			<!-- 超过五十字显示警告 -->
+			<p :class="{warn:content.length>50}" v-model="content">{{content.length}}/50字</p>
+
+			<!-- 内容为空不允许发布同时发布按钮失效 -->
+			<!-- i表示在成功发布前点击发布按钮的次数 -->
+			<p class="warn" v-show="content.length<=0 && i>0">发布内容不能为空！</p>
+			<p>
+				<button @click="submit()" :disabled="content.length>50">发布</button>
+			<!-- 清空按钮 -->
+				<button @click="clear()" :disabled="content.length<=0">清空</button>
+			</p>
+			</div>
+	</body>
+	<script src='js/vue.js'></script>
+	<script>
+	var vue=new Vue({
+		el:'#app',
+		data:{
+				content:"",
+				sub:false,
+				i:0
+		},
+		methods:{
+			//发布函数，点击发布按钮后清空输入框内容，并在控制台打印输入数据同时提示用户发布成功
+
+			submit(){
+				this.i++
+				if(this.content!=""){
+					console.log(this.content);
+					this.content=""
+					alert("发布成功！");
+					//this.i=0
+					}
+			},
+			clear(){
+				this.content=""
+			}
+		}
+	})
+	</script>
+</html>
