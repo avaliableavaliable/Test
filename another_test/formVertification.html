@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="jquery/js/jquery.min.js"></script>
+		<script>
+			// 获取并检验用户名
+			function checkUsername(){
+				// 用户名的格式
+				var reg1=/^\D{6,}$/
+				var username =$("#user").val();
+				if(!reg1.test(username)){
+					$("#usertip").html("<font color='red'>格式必须是至少六位的非数字</font>");
+					return false;
+				}
+				// 提示OK
+				$("#usertip").html("<font color='green'>OK</font>")
+				return true;
+				
+			}
+			
+			// 检验密码
+			function checkPassword(){
+				var reg2=/^\S{5,}$/
+				var pwd =$("#pwd").val();
+				if(!reg2.test(pwd)){
+					$("#pwdtip").html("<font color='red'>至少为5位非空格</font>");
+					return false;
+				}
+				$("#pwdtip").html("<font color='green'>OK</font>");
+				return true;
+			}
+			
+			// 检验两次密码是否一致
+			function checkRepwd(){
+				var p1=$("#pwd").val();
+				var p2=$("#repwd").val();
+				
+				if(p1.length< 5 || p1 != p2){
+				   $("#repwdtip").html("<font color='red'>两次密码不一致</font>");
+				   return false;
+				}
+				
+			   $("#repwdtip").html("<font color='green'>OK</font>");
+			   return true;
+			}
+			
+			// 检查邮箱格式
+			function checkEmail(){
+				var em=$("#email").val();
+				// 这里的邮箱格式是大致，sa456f@56.abd这种有误的格式检验不出来
+				var regex3 = /^\w{6,}@[0-9A-Za-z]{2,}(\.[a-zA-Z]{2,3}){1,2}$/; 
+				if(!regex3.test(em) ){
+					$("#emailtip").html("<font color='red'>邮箱格式有误</font>");
+				    return false;
+				}
+				$("#emailtip").html("<font color='green'>OK</font>");
+				return true;
+			}
+			
+			// 如果以上均返回True, 那么用户输入的信息是正确的，跳转到下一个页面，并在控制台打印信息
+			function checkForm(){
+				return checkUsername()&&checkPassword()&&checkRepwd()&&checkEmail();
+			}
+
+			function showInfo(){
+				if (checkUsername()&&checkPassword()&&checkRepwd()&&checkEmail()){
+					console.log("用户名:", $("#user").val());
+					console.log("密码:", $("#pwd").val());
+					console.log("Email:", $("#email").val());
+				}
+				//休眠两秒查看控制台输出信息
+				sleep(2000);
+			}
+
+			//暂停函数
+			function sleep(d){
+  				for(var t = Date.now();Date.now() - t <= d;);
+			}
+		</script>
+		<style>
+			/* 取消输入框点击后显示外边框 */
+			input:focus{
+				outline:none;
+			}
+
+			/* 鼠标悬停在注册按钮时 */
+			.rb1:hover{
+				cursor:pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<table id="center" border="0" cellspacing="0" cellpadding="0">
+			<form action="https://www.bilibili.com" method="get" onsubmit="return checkForm()">
+				<tr>
+					<td>您的姓名：</td>
+					<td>
+						<input id="user" type="text" name="username" onblur="checkUsername()"/>
+						<div id="usertip" style="display: inline;"></div>
+					</td>
+				</tr>
+				<tr>
+					<td>输入密码：</td>
+					<td>
+						<input id="pwd" name="pwd" type="password" onblur="checkPassword()"/>
+						<div id="pwdtip" style="display: inline;"></div>
+					</td>
+				</tr>
+				<tr>
+					<td>再输入一遍密码：</td>
+					<td>
+						<input id="repwd" type="password" onblur="checkRepwd()"/>
+						<div id="repwdtip" style="display: inline;"></div>
+					</td>
+				</tr>
+				<tr>
+					<td>您的Email：</td>
+					<td>
+						<input id="email" type="text" onblur="checkEmail()"/>
+						<span id="emailtip"></span>
+					</td>
+				</tr>
+				<tr>
+					
+					<td colspan="2">
+						<input type="submit" value="注册" class="rb1" onclick="showInfo()"/>
+					</td>
+				</tr>
+			</form>
+		</table>
+	</body>
+</html>
